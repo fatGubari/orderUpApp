@@ -24,7 +24,7 @@ class _OrderCardSupplierState extends State<OrderCardSupplier> {
   Widget build(BuildContext context) {
     final ordersData = Provider.of<Orders>(context);
     final orderDetails = ordersData.getSupplierAndAmount(widget.order);
-    // final supplierName = Provider.of<Auth>(context).userName;
+    // final supplierName = Provider.of<Auth>(context)().userName;
 
     if (_isConfirmed) {
       return Container();

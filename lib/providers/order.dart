@@ -1,8 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:order_up/providers/cart.dart';
 import 'package:http/http.dart' as http;
+import 'package:order_up/providers/cart.dart';
 
 class OrdersItem {
   final String id;
@@ -26,13 +27,24 @@ class OrdersItem {
 
 class Orders with ChangeNotifier {
   List<OrdersItem> _orders = [];
-  final String authToken;
-  final String userId;
-  final String userName;
-  final String userType;
+  late final String authToken;
+  late final String userId;
+  late final String userName;
+  late final String userType;
+  bool authIsSet = false;
 
-  Orders(
-      this.authToken, this.userId, this.userName, this.userType, this._orders);
+  void setAuth(String authToken, String userId, String userName,
+      String userType, List<OrdersItem> orders) {
+    if (authIsSet) return;
+
+    this.authToken = authToken;
+    this.userId = userId;
+    this.userName = userName;
+    this.userType = userType;
+    _orders = orders;
+
+    authIsSet = true;
+  }
 
   List<OrdersItem> get orders {
     return [..._orders];

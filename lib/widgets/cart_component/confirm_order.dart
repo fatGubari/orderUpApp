@@ -9,7 +9,6 @@ void showConfirmationDialog(
   Cart cart,
   String restaurantId,
 ) {
-  
   showDialog(
     context: context,
     builder: (BuildContext context) {
