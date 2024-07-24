@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:order_up/classes/notificationService.dart';
 import 'package:order_up/providers/cart.dart';
+import 'package:order_up/providers/products.dart';
 import 'package:order_up/widgets/cart_component/cart_button.dart';
 import 'package:order_up/widgets/product_component/dropdown_quantity.dart';
 import 'package:order_up/widgets/product_component/image_slider.dart';
-import 'package:order_up/providers/products.dart';
 import 'package:order_up/widgets/product_component/text_builder.dart';
 import 'package:provider/provider.dart';
 
@@ -28,7 +28,7 @@ class _ProductDetailsState extends State<ProductDetails> {
   @override
   Widget build(BuildContext context) {
     final routeArgs = ModalRoute.of(context)?.settings.arguments as Product;
-    // final product = Provider.of<Product>(context);
+    // final product = Provider.of<Product>(context)();
     final cart = Provider.of<Cart>(context, listen: false);
 
     // Receive selected amount
@@ -98,8 +98,7 @@ class _ProductDetailsState extends State<ProductDetails> {
               amountIndex != null
                   ? TextBuilder(
                       'Price: ${routeArgs.price[amountIndex!]} Rial', 18)
-                  : TextBuilder(
-                      'Price: ${routeArgs.price[0]} Rial', 18),
+                  : TextBuilder('Price: ${routeArgs.price[0]} Rial', 18),
               Divider(),
               TextBuilder('Description', 18),
               TextBuilder(routeArgs.description, 16),

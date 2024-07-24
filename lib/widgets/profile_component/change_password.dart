@@ -28,7 +28,9 @@ class ChangePasswordState extends State<ChangePassword> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Change Password',),
+      title: Text(
+        'Change Password',
+      ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -79,11 +81,12 @@ class ChangePasswordState extends State<ChangePassword> {
     }
 
     if (!_isPasswordValid(newPassword)) {
-      _showErrorDialog('Password must contain at least 8 characters, one capital letter, and one special character.');
+      _showErrorDialog(
+          'Password must contain at least 8 characters, one capital letter, and one special character.');
       return;
     }
 
-        final authProvider = Provider.of<Auth>(context, listen: false);
+    final authProvider = Provider.of<Auth>(context, listen: false);
     final String? userType = authProvider.userType;
     authProvider.updateUserPassword(
       newPassword: newPassword,
@@ -98,7 +101,7 @@ class ChangePasswordState extends State<ChangePassword> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Error',style: TextStyle(color: Colors.red)),
+          title: Text('Error', style: TextStyle(color: Colors.red)),
           content: Text(message),
           actions: <Widget>[
             TextButton(

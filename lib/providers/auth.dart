@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
-import 'package:http/http.dart' as http;
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:order_up/models/profile_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -38,6 +40,12 @@ class Auth with ChangeNotifier {
 
   String? get userType {
     return _userType;
+  }
+
+  @override
+  void dispose() {
+    log("Disposing Auth");
+    super.dispose();
   }
 
   Future login(String email, String password) async {
@@ -110,7 +118,9 @@ class Auth with ChangeNotifier {
               id: restData.key,
               name: restData.value['name'],
               email: email,
-              location: restData.value['location'],
+              location: restData.value['location'] != null
+                  ? ProfileLocation.fromMap(restData.value['location'])
+                  : null,
               phoneNumber: restData.value['phoneNumber'],
               image: restData.value['image'],
               password: password,
@@ -145,7 +155,10 @@ class Auth with ChangeNotifier {
               id: suppData.key,
               name: suppData.value['name'],
               email: email,
-              location: suppData.value['location'],
+              location: suppData.value['location'] != null &&
+                      suppData.value['location'] is! String
+                  ? ProfileLocation.fromMap(suppData.value['location'])
+                  : null,
               phoneNumber: suppData.value['phoneNumber'],
               image: suppData.value['image'],
               password: password,
@@ -253,6 +266,7 @@ class Auth with ChangeNotifier {
     required String newName,
     required String newEmail,
     required String newPhoneNumber,
+    required ProfileLocation? newLocation,
     required String? userType,
   }) async {
     // Determine the correct endpoint based on userType
@@ -272,7 +286,12 @@ class Auth with ChangeNotifier {
         'name': newName,
         'email': newEmail,
         'phoneNumber': newPhoneNumber,
-        'location': profileData!.location,
+        'location': newLocation != null
+            ? {
+                'latitude': newLocation.latitude,
+                'longitude': newLocation.longitude
+              }
+            : null,
         'image': profileData!.image,
         'password': profileData!.password
       };
@@ -281,7 +300,12 @@ class Auth with ChangeNotifier {
         'name': newName,
         'email': newEmail,
         'phoneNumber': newPhoneNumber,
-        'location': profileData!.location,
+        'location': newLocation != null
+            ? {
+                'latitude': newLocation.latitude,
+                'longitude': newLocation.longitude
+              }
+            : null,
         'image': profileData!.image,
         'password': profileData!.password,
         'rate': profileData!.rate,
@@ -303,7 +327,7 @@ class Auth with ChangeNotifier {
         email: newEmail,
         password: profileData?.password ?? '',
         phoneNumber: newPhoneNumber,
-        location: profileData?.location ?? '',
+        location: newLocation,
       );
 
       notifyListeners();
@@ -373,7 +397,7 @@ class Auth with ChangeNotifier {
         email: profileData?.email ?? '',
         password: newPassword,
         phoneNumber: profileData?.phoneNumber ?? '',
-        location: profileData?.location ?? '',
+        location: profileData?.location,
       );
 
       notifyListeners();

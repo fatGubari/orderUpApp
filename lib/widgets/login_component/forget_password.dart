@@ -27,7 +27,8 @@ class _ForgetPasswordState extends State<ForgetPassword> {
   Future<void> _submit() async {
     if (_formKey.currentState!.validate()) {
       try {
-        await Provider.of<Auth>(context, listen: false)
+        await context
+            .read<Auth>()
             .sendPasswordResetEmail(_emailController.text);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

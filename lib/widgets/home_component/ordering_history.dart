@@ -17,7 +17,7 @@ class OrderingHistory extends StatefulWidget {
 class _OrderingHistoryState extends State<OrderingHistory> {
   DateTime? _startDate;
   List<bool> _expandedList = [];
-  
+
   late Future _ordersFuture;
 
   Future _obtainOrdersFuture() {
@@ -53,36 +53,36 @@ class _OrderingHistoryState extends State<OrderingHistory> {
           ),
         ],
       ),
-      body:FutureBuilder(
-              future: _ordersFuture,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                } else {
-                  if (snapshot.error != null) {
-                    return Center(
-                      child: Text('An error occurred!'),
-                    );
-                  } else {
-                    return Consumer<Orders>(
-                      builder: (ctx, orderData, child) => ListView.builder(
-                        itemCount: orders.length,
-                        itemBuilder: (context, index) {
-                          final order = orders[index];
-                          if (_startDate != null &&
-                              order.dateTime.isBefore(_startDate!)) {
-                            return Container();
-                          }
-                          return _buildOrderItem(order, index, context);
-                        },
-                      ),
-                    );
-                  }
-                }
-              },
-            ),
+      body: FutureBuilder(
+        future: _ordersFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          } else {
+            if (snapshot.error != null) {
+              return Center(
+                child: Text('An error occurred!'),
+              );
+            } else {
+              return Consumer<Orders>(
+                builder: (ctx, orderData, child) => ListView.builder(
+                  itemCount: orders.length,
+                  itemBuilder: (context, index) {
+                    final order = orders[index];
+                    if (_startDate != null &&
+                        order.dateTime.isBefore(_startDate!)) {
+                      return Container();
+                    }
+                    return _buildOrderItem(order, index, context);
+                  },
+                ),
+              );
+            }
+          }
+        },
+      ),
     );
   }
 

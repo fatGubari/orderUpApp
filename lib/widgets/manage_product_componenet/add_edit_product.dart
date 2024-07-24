@@ -96,7 +96,8 @@ class _AddEditProductState extends State<AddEditProduct> {
     });
 
     if (_editedProduct.id.isNotEmpty) {
-      await Provider.of<Products>(context, listen: false)
+      await context
+          .read<Products>()
           .updateProduct(_editedProduct.id, _editedProduct);
     } else {
       try {
@@ -242,8 +243,7 @@ class _AddEditProductState extends State<AddEditProduct> {
                                   return null;
                                 },
                                 onSaved: (value) {
-                                  _editedProduct.price[index] =
-                                      value!;
+                                  _editedProduct.price[index] = value!;
                                 },
                               ),
                             ),

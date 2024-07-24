@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:order_up/items/side_bar_supplier.dart';
 import 'package:order_up/providers/order.dart';
@@ -28,6 +30,7 @@ class _SupplierHomepageState extends State<SupplierHomepage> {
 
   @override
   Widget build(BuildContext context) {
+    log('Supplier build');
     final ordersData = Provider.of<Orders>(context);
     final orders = ordersData.orders
         .where((order) => order.status == 'In Progress')

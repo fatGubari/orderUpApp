@@ -1,4 +1,6 @@
+import 'dart:developer';
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:order_up/providers/auth.dart';
 import 'package:order_up/widgets/login_component/forget_password.dart';
@@ -53,7 +55,8 @@ class _AuthCardState extends State<AuthCard> {
     });
     try {
       if (_authMode == AuthMode.Login) {
-        await Provider.of<Auth>(context, listen: false)
+        await context
+            .read<Auth>()
             .login(_authData['email']!, _authData['password']!);
       }
     } on HttpException catch (error) {
@@ -70,14 +73,17 @@ class _AuthCardState extends State<AuthCard> {
         errorMessage = 'Could not find a user with that email.';
       }
       _showErrorDialog(errorMessage);
-    } catch (error) {
+    } catch (error, stackTrace) {
       // const errorMessage = 'Failed to authenticate. Please try again later';
       _showErrorDialog(error.toString());
+      log(error.toString(), stackTrace: stackTrace);
       // print(error.toString());
     }
-    setState(() {
-      _isLoading = false;
-    });
+    if (mounted) {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
   void _callUs() async {

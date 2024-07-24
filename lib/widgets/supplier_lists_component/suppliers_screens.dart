@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:order_up/widgets/cart_component/cart_button.dart';
 import 'package:order_up/providers/products.dart';
 import 'package:order_up/providers/suppliers.dart';
+import 'package:order_up/widgets/cart_component/cart_button.dart';
 import 'package:order_up/widgets/product_component/product_card.dart';
 import 'package:provider/provider.dart';
 
@@ -18,7 +18,8 @@ class _SuppliersScreensState extends State<SuppliersScreens> {
   late Future _productsFuture;
 
   Future _obtainProductsFuture() {
-    return Provider.of<Products>(context, listen: false).fetchAndSetProductsForRestaurant();
+    return Provider.of<Products>(context, listen: false)
+        .fetchAndSetProductsForRestaurant();
   }
 
   @override
@@ -114,7 +115,7 @@ class _SuppliersScreensState extends State<SuppliersScreens> {
                 final merchandise = productData.products
                     .where((product) => product.supplier == routeArgs.name)
                     .toList();
-                    // print(productData.products.first);
+                // print(productData.products.first);
                 print('Filtered Merchandise: $merchandise');
                 if (merchandise.isEmpty) {
                   return Center(

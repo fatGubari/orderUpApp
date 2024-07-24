@@ -6,10 +6,21 @@ import 'package:http/http.dart' as http;
 
 class Products with ChangeNotifier {
   List<Product> products = [];
-  final String authToken;
-  final String userId;
+  late final String authToken;
+  late final String userId;
+  bool authIsSet = false;
 
-  Products(this.authToken, this.userId, this.products);
+  // Products(this.authToken, this.userId, this.products);
+
+  void setAuth(String authToken, String userId, List<Product> products) {
+    if (authIsSet) return;
+
+    this.authToken = authToken;
+    this.userId = userId;
+    this.products = products;
+
+    authIsSet = true;
+  }
 
   List<Product> get productsData {
     return [...products];

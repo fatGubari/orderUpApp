@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:order_up/models/profile_data.dart';
 import 'package:order_up/providers/auth.dart';
 import 'package:order_up/widgets/profile_component/change_image.dart';
 import 'package:order_up/widgets/profile_component/change_location.dart';
@@ -26,18 +27,18 @@ class EditProfileState extends State<EditProfile> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController locationController = TextEditingController();
   final TextEditingController phoneNumberController = TextEditingController();
-  String selectedLocation = 'New York, USA';
+  ProfileLocation? selectedLocation;
   LatLng? selectedLocationLatLng;
 
   @override
   void initState() {
     super.initState();
-    nameController.text =
-        Provider.of<Auth>(context, listen: false).profileData!.name;
-    emailController.text =
-        Provider.of<Auth>(context, listen: false).profileData!.email;
-    phoneNumberController.text =
-        Provider.of<Auth>(context, listen: false).profileData!.phoneNumber;
+    ProfileData profileData =
+        Provider.of<Auth>(context, listen: false).profileData as ProfileData;
+    nameController.text = profileData.name;
+    emailController.text = profileData.email;
+    phoneNumberController.text = profileData.phoneNumber;
+    selectedLocation = profileData.location;
   }
 
   @override
@@ -73,6 +74,7 @@ class EditProfileState extends State<EditProfile> {
             SizedBox(height: 10),
             ChangeLocation(
               selectedLocationMap: selectedLocation,
+              setLocation: _setLocation,
             ),
           ],
         ),
@@ -88,6 +90,13 @@ class EditProfileState extends State<EditProfile> {
         ),
       ],
     );
+  }
+
+  void _setLocation(double latitude, double longitude) {
+    setState(() {
+      selectedLocation =
+          ProfileLocation(latitude: latitude, longitude: longitude);
+    });
   }
 
   void _saveChanges(BuildContext context) {
@@ -119,6 +128,7 @@ class EditProfileState extends State<EditProfile> {
       newName: newName,
       newEmail: newEmail,
       newPhoneNumber: newPhoneNumber,
+      newLocation: selectedLocation,
       userType: userType,
     );
 
